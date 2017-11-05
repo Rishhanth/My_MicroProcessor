@@ -48,6 +48,6 @@ GTKWave 3.0.1+
 # How To Test?
 You can code your own program in the program memory module of `microprocessor.v ` following all the above specified guidelines.
 To test your code run:
-`iverilog -o control_unit test_cu.v microprocessor.v`
-`vvp control_unit` (You can press `CTRL` + `Z` after giving the required time for your program to get dumped into the dump file `test3.vcd`)
-`gtkwave test3.vcd&`
+1) `iverilog -o control_unit test_cu.v microprocessor.v`
+2) `vvp control_unit` (You can press `CTRL` + `Z` after giving the required time for your program to get dumped into the dump file `test3.vcd`)
+3) `gtkwave test3.vcd&`
