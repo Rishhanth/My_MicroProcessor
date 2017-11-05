@@ -1,20 +1,22 @@
 # My 8-Bit Microprocessor
 
 # SPECIFICATIONS:
-6 x 8 internal registers
-1024 x 8 RAM
-21 Opcodes
-4 bit Flag Register
+1) 6 x 8 internal registers.
+2) 1024 x 8 RAM.
+3) 21 Opcodes.
+4) 4 bit Flag Register.
 
 # DECODING INSTRUCTIONS:
 ## Each instruction consists of 32 bits.
+
 ### It could be divided as:
-Bits 31:22 RAM Address
-Bits 21:14 Data (for immediate loading)
-Bits 13:11 Input Operand 1 (register's address)
-Bits 10:8 Input Operand 2
-Bits 8:6 Output Operand
-Bits 5:0 Opcode
+
+1) Bits 31:22 RAM Address .
+2) Bits 21:14 Data (for immediate loading) .
+3) Bits 13:11 Input Operand 1 (register's address) .
+4) Bits 10:8 Input Operand 2 . 
+5) Bits 8:6 Output Operand .
+6) Bits 5:0 Opcode .
 
 # OPCODES:
 1)  00001 move
