@@ -41,3 +41,13 @@
 20) 10111 load memory (RAM) immediate
 21) 00000 EOP                                       
 
+# Requirements for testing in Linux or Unix:
+Icarus Verilog compiler
+GTKWave 3.0.1+
+
+# How To Test?
+You can code your own program in the program memory module of `microprocessor.v ` following all the above specified guidelines.
+To test your code run:
+`iverilog -o control_unit test_cu.v microprocessor.v`
+`vvp control_unit` (You can press `CTRL` + `Z` after giving the required time for your program to get dumped into the dump file `test3.vcd`)
+`gtkwave test3.vcd&`
