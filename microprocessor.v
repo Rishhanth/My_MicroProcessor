@@ -845,7 +845,7 @@ assign ram_in = str ? data_out : data;  //store vs load immediate
 assign data_eucl = ld_m ? ram_out : data; //load immediate reg vs load  
 program_memory PM(.p_c(pfcl),.instr(instr));
 idec IDE(.pm_cont(instr),.op1(op1),.op2(op2),.op3(op3),.data(data),.opcode(opcode),.ram_addr(ram_ad));
-eucl EUCL(.clock(clock),.op1(op1),.op2(op1),.op3(op3),.data(data_eucl),.opcode(opcode),.dataout(data_out),.p_c(p_c),.p_c_out(pfcl),.en_ram(en_ram),.wram(ram_w),.str(str),.ld_m(ld_m));
+eucl EUCL(.clock(clock),.op1(op1),.op2(op2),.op3(op3),.data(data_eucl),.opcode(opcode),.dataout(data_out),.p_c(p_c),.p_c_out(pfcl),.en_ram(en_ram),.wram(ram_w),.str(str),.ld_m(ld_m));
 main_memory RAM(.enable(en_ram),.Write(ram_w),.Address(ram_ad),.DataIn(ram_in),.DataOut(ram_out));
 always @(posedge clock)
 begin
