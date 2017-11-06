@@ -1,15 +1,14 @@
 # My 8-Bit Microprocessor
 
-# SPECIFICATIONS:
+## Specifications:
 1) 6 x 8 internal registers.
 2) 1024 x 8 RAM.
 3) 21 Opcodes.
 4) 4 bit Flag Register.
 
-# DECODING INSTRUCTIONS:
-## Each instruction consists of 32 bits.
-
-### It could be divided as:
+## Decoding Instructions:
+#### Each instruction consists of 32 bits.
+#### It could be divided as:
 
 1) Bits 31:22 RAM Address .
 2) Bits 21:14 Data (for immediate loading) .
@@ -18,7 +17,7 @@
 5) Bits 8:6 Output Operand .
 6) Bits 5:0 Opcode .
 
-# OPCODES:
+## Opcodes:
 1)  00001 move
 2)  00010 load register (immediate data)
 3)  00011 add
@@ -41,3 +40,13 @@
 20) 10110 Dec
 21) 00000 EOP                                       
 
+# Requirements for testing in Linux or Unix:
+1) Icarus Verilog compiler
+2) GTKWave 3.0.1+
+
+# How To Test?
+You can code your own program in the program memory module of `microprocessor.v ` following all the above specified guidelines.
+To test your code run:
+1) `iverilog -o control_unit test_cu.v microprocessor.v`
+2) `vvp control_unit` (You can press `CTRL` + `Z` after giving the required time for your program to get dumped into the dump file `test3.vcd`)
+3) `gtkwave test3.vcd&`
