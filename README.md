@@ -34,10 +34,10 @@
 13) 01110 branch if lesser
 14) 01111 branch if zero (could be used as branch if equal)
 15) 10001 branch if shifted out bit 
-16) 10011 multiply
-17) 10100 divide
-18) 10101 factorial
-19) 10110 load from memory
-20) 10111 load memory (RAM) immediate
+16) 10010 jump
+17) 10011 load from memory
+18) 10100 load memory (RAM) immediate
+19) 10101 Inc
+20) 10110 Dec
 21) 00000 EOP                                       
 
