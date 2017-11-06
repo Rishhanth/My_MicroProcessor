@@ -831,9 +831,9 @@ end
 assign instr = p_m [p_c];
 endmodule
 ///////////////////////////////////////////////////////
-module control_unit(clock,data_out,temp);
+module control_unit(clock,data_out);
 input clock;
-output [7:0] data_out,temp;
+output [7:0] data_out;
 wire [9:0] ram_ad;
 reg [7:0] p_c = 0;
 wire [7:0] pfcl,data,ram_out,ram_in,data_eucl;
