@@ -7,9 +7,8 @@
 4) 4 bit Flag Register.
 
 ## Decoding Instructions:
-### Each instruction consists of 32 bits.
-
-### It could be divided as:
+#### Each instruction consists of 32 bits.
+#### It could be divided as:
 
 1) Bits 31:22 RAM Address .
 2) Bits 21:14 Data (for immediate loading) .
