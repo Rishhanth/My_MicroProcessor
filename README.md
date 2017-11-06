@@ -42,8 +42,8 @@
 21) 00000 EOP                                       
 
 # Requirements for testing in Linux or Unix:
-Icarus Verilog compiler
-GTKWave 3.0.1+
+1) Icarus Verilog compiler
+2) GTKWave 3.0.1+
 
 # How To Test?
 You can code your own program in the program memory module of `microprocessor.v ` following all the above specified guidelines.
