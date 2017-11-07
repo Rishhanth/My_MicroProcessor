@@ -60,57 +60,46 @@ case(f_select)
 	4'b0000:
 			begin  //add
 			check  <= Mem [0]+Mem [1];
-			//Mem [2] <= check [7:0];
-			//flag_reg [3] <= check [8];
 			set_ovf <= 1; 
 			set_zero <= 1;
 			end
 	4'b0001: begin  //sub
 			check  <= Mem [0]-Mem [1];
-			//Mem [2] <= checxk [7:0];
-		    flag_reg [3] <= check [8]; 
 			set_zero <= 1;
 			set_ovf <= 1;
 			end
 	4'b0010: begin  //and
 			 check <= Mem [0]&Mem [1];
-			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			 end
 	4'b0011: begin     //or
 	         check <= Mem [0]|Mem [1];
-			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			 end
 	4'b0100: begin     //ls
 			 flag_reg [2] <= Mem [0] [7];
 			 check <= Mem [0]<<1;
-			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			end
 	4'b0101: begin          //rs
 			 flag_reg [2] <= Mem [0] [0];
 			 check <= Mem [0]>>1;
-			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			 end
 	4'b0110: begin               //cmp
 			 check  <= Mem [1]-Mem [0];
-			 //flag_reg [1] <= check [8];
 			 set_zero <= 1;
 			 set_cmp <= 1;
 			 end
 	4'b0111: begin  //dec
 			 check <= Mem [0] - 1;
 			 flag_reg [3] <= check [8];
-			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			 set_ovf <= 1;
 			 end
 	4'b1001: begin  //inc 
 			 check <= Mem [0] + 1;
 			 flag_reg [3] <= check [8];
-			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			 set_ovf <= 1;
 			 end
