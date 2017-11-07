@@ -6,14 +6,20 @@ wire [7:0] DataIn;
 input clock,ld,write,en_alu,en_mem;
 input [2:0] addr;
 reg [7:0] outdr;
-reg set_zero =0;
+reg set_zero,set_ovf,set_cmp;
 output reg [3:0] flag_reg = 0;
-reg [15:0] check=0;
+reg [8:0] check=0;
 output [7:0] outdata;
 reg [7:0] Mem [0:5];
 input [3:0] f_select;
 assign outdata = outdr;
 assign DataIn = ld ? indata : outdr; 
+initial
+begin
+set_zero=0;
+set_cmp=0;
+set_ovf=0;
+end
 always @(posedge clock)
 begin
 if (en_mem)
@@ -27,6 +33,7 @@ if (en_alu)
 begin
 if (set_zero)
 begin
+Mem [0] <= check [7:0];
 if (check [7:0] == 0)
 begin
 flag_reg [0] <= 1; 
@@ -37,59 +44,75 @@ flag_reg [0] <= 0;
 end
 set_zero <= 0;
 end
+if (set_ovf)
+begin
+flag_reg [3] <= check [8];
+set_ovf <= 0;
+end
+if (set_cmp)
+begin
+flag_reg [1] <= check [8];
+set_cmp <= 0;
+end
 else
 begin
 case(f_select)
-	4'b0000: begin  //add
+	4'b0000:
+			begin  //add
 			check  <= Mem [0]+Mem [1];
-			Mem [2] <= check [7:0];
-			flag_reg [3] <= check [8];
-			set_zero <= 1; 
+			//Mem [2] <= check [7:0];
+			//flag_reg [3] <= check [8];
+			set_ovf <= 1; 
+			set_zero <= 1;
 			end
 	4'b0001: begin  //sub
 			check  <= Mem [0]-Mem [1];
-			Mem [2] <= check [7:0];
+			//Mem [2] <= checxk [7:0];
 		    flag_reg [3] <= check [8]; 
 			set_zero <= 1;
+			set_ovf <= 1;
 			end
 	4'b0010: begin  //and
 			 check <= Mem [0]&Mem [1];
-			 Mem [2] <= check [7:0];
+			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			 end
 	4'b0011: begin     //or
 	         check <= Mem [0]|Mem [1];
-			 Mem [2] <= check [7:0];
+			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			 end
 	4'b0100: begin     //ls
 			 flag_reg [2] <= Mem [0] [7];
 			 check <= Mem [0]<<1;
-			 Mem [2] <= check [7:0];
+			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
-			 end
+			end
 	4'b0101: begin          //rs
 			 flag_reg [2] <= Mem [0] [0];
 			 check <= Mem [0]>>1;
-			 Mem [2] <= check [7:0];
+			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
 			 end
 	4'b0110: begin               //cmp
 			 check  <= Mem [1]-Mem [0];
-			 flag_reg [1] <= check [8];
+			 //flag_reg [1] <= check [8];
 			 set_zero <= 1;
+			 set_cmp <= 1;
 			 end
 	4'b0111: begin  //dec
-			 check <= Mem [1] - 1;
+			 check <= Mem [0] - 1;
 			 flag_reg [3] <= check [8];
-			 Mem [2] <= check [7:0];
+			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
+			 set_ovf <= 1;
 			 end
 	4'b1001: begin  //inc 
 			 check <= Mem [0] + 1;
 			 flag_reg [3] <= check [8];
-			 Mem [2] <= check [7:0];
+			 //Mem [2] <= check [7:0];
 			 set_zero <= 1;
+			 set_ovf <= 1;
 			 end
 endcase
 end
@@ -239,12 +262,16 @@ state <= 5'b00101;
 end
 else if (state==5'b00101)
 begin
-addr <= 3'b010 ;
 en_alu <=1;
-en_mem <= 1;
-state <= 5'b00110;
+state<=5'b00110;
 end
 else if (state==5'b00110)
+begin
+addr <= 3'b000 ;
+en_mem <= 1;
+state <= 5'b00111;
+end
+else if (state==5'b00111)
 begin
 addr <= op3;
 en_mem <= 1;
@@ -289,12 +316,16 @@ state <= 5'b00101;
 end
 else if (state==5'b00101)
 begin
-addr <= 3'b010 ;
 en_alu <=1;
-en_mem <= 1;
-state <= 5'b00110;
+state<=5'b00110;
 end
 else if (state==5'b00110)
+begin
+addr <= 3'b000 ;
+en_mem <= 1;
+state <= 5'b00111;
+end
+else if (state==5'b00111)
 begin
 addr <= op3;
 en_mem <= 1;
@@ -339,12 +370,16 @@ state <= 5'b00101;
 end
 else if (state==5'b00101)
 begin
-addr <= 3'b010 ;
 en_alu <=1;
-en_mem <= 1;
-state <= 5'b00110;
+state<=5'b00110;
 end
 else if (state==5'b00110)
+begin
+addr <= 3'b000 ;
+en_mem <= 1;
+state <= 5'b00111;
+end
+else if (state==5'b00111)
 begin
 addr <= op3;
 en_mem <= 1;
@@ -389,12 +424,16 @@ state <= 5'b00101;
 end
 else if (state==5'b00101)
 begin
-addr <= 3'b010 ;
 en_alu <=1;
-en_mem <= 1;
-state <= 5'b00110;
+state<=5'b00110;
 end
 else if (state==5'b00110)
+begin
+addr <= 3'b000 ;
+en_mem <= 1;
+state <= 5'b00111;
+end
+else if (state==5'b00111)
 begin
 addr <= op3;
 en_mem <= 1;
@@ -426,12 +465,16 @@ state <= 5'b00011;
 end
 else if (state==5'b00011)
 begin
-addr <= 3'b010 ;
 en_alu <=1;
-en_mem <= 1;
-state <= 5'b00100;
+state<=5'b00100;
 end
 else if (state==5'b00100)
+begin
+addr <= 3'b000 ;
+en_mem <= 1;
+state <= 5'b00101;
+end
+else if (state==5'b00101)
 begin
 addr <= op1;
 en_mem <= 1;
@@ -463,12 +506,16 @@ state <= 5'b00011;
 end
 else if (state==5'b00011)
 begin
-addr <= 3'b010 ;
-en_mem <= 1;
 en_alu <=1;
-state <= 5'b00100;
+state<=5'b00100;
 end
 else if (state==5'b00100)
+begin
+addr <= 3'b000 ;
+en_mem <= 1;
+state <= 5'b00101;
+end
+else if (state==5'b00101)
 begin
 addr <= op1;
 en_mem <= 1;
@@ -607,6 +654,7 @@ end
 else if (state==5'b00001)
 begin
 ld_m <= 1;
+en_ram <= 1;
 addr <= op1;
 ld <= 1;
 en_mem <= 1;
@@ -645,11 +693,16 @@ state <= 3;
 end
 else if (state==3)
 begin
-addr <= 3'b000;
-en_mem <= 1;
-state <= 4; 
+en_alu <= 1;
+state <= 4;
 end
 else if (state==4)
+begin
+addr <= 3'b000;
+en_mem <= 1;
+state <= 5; 
+end
+else if (state==5)
 begin
 addr <= op1;
 en_mem <= 1;
@@ -668,7 +721,7 @@ state <= 1;
 end
 else if (state==1)
 begin
-addr <= 3'b001;
+addr <= 3'b000;
 en_mem <= 1;
 write <= 1;
 state <= 2;
@@ -681,11 +734,16 @@ state <= 3;
 end
 else if (state==3)
 begin
-addr <= 3'b001;
-en_mem <= 1;
-state <= 4; 
+en_alu <= 1;
+state <= 4;
 end
 else if (state==4)
+begin
+addr <= 3'b000;
+en_mem <= 1;
+state <= 5; 
+end
+else if (state==5)
 begin
 addr <= op1;
 en_mem <= 1;
@@ -702,10 +760,14 @@ input [7:0] p_c;
 reg [31:0] p_m [0:255];
 output [31:0] instr;
 initial begin
-p_m [0] = 32'b00000000000000001001100000000010;
-p_m [1] = 32'b00000000000000001010000000000010;
-p_m [2] = 32'b00000000000000000010001110001011;
-p_m [3] = 32'b00000000000000000000000000000000;
+p_m [0] = 32'b00000000000000001000000000010100;
+p_m [1] = 32'b00000000010000001100000000010100;
+p_m [2] = 32'b00000000000000000010000000010011;
+p_m [3] = 32'b00000000010000000010100000010011;
+p_m [4] = 32'b00000000000000000010010101000100;
+p_m [5] = 32'b00000000100000000001000000001010;
+p_m [6] = 32'b00000000110000000010000000001010;
+p_m [7] = 32'b00000000000000000000000000000000;
 end
 assign instr = p_m [p_c];
 endmodule
@@ -725,7 +787,7 @@ assign data_eucl = ld_m ? ram_out : data; //load immediate reg vs load
 program_memory PM(.p_c(pfcl),.instr(instr));
 idec IDE(.pm_cont(instr),.op1(op1),.op2(op2),.op3(op3),.data(data),.opcode(opcode),.ram_addr(ram_ad));
 eucl EUCL(.clock(clock),.op1(op1),.op2(op2),.op3(op3),.data(data_eucl),.opcode(opcode),.dataout(data_out),.p_c(p_c),.p_c_out(pfcl),.en_ram(en_ram),.wram(ram_w),.str(str),.ld_m(ld_m));
-main_memory RAM(.enable(en_ram),.Write(ram_w),.Address(ram_ad),.DataIn(ram_in),.DataOut(ram_out));
+main_memory RAM(.clock(clock),.enable(en_ram),.Write(ram_w),.Address(ram_ad),.DataIn(ram_in),.DataOut(ram_out));
 always @(posedge clock)
 begin
 p_c <= pfcl;
