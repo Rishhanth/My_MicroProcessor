@@ -13,8 +13,7 @@ initial
 initial 
 begin
 clock=0;
-#100;
+
+repeat(1000)#100 clock = !clock;
 end
-always
-#100 clock = !clock;  
 endmodule
