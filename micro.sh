@@ -17,6 +17,6 @@ echo "${bold}PROGRAM:";
 read -r filename;
 filename=$filename'.asm';
 python assembler.py $filename
-iverilog -o control_unit test_cu.v microprocessor.V
+iverilog -o control_unit test_cu.v microprocessor.v
 vvp control_unit
 gtkwave test3.vcd&
